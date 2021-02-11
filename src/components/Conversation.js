@@ -2,8 +2,20 @@ import { Box, Flex, Text, Spacer, Image, Icon, IconButton, HStack, Input } from 
 import React from 'react';
 import { PhoneIcon, AddIcon } from '@chakra-ui/icons';
 import { BsFillCameraVideoFill, BsThreeDotsVertical } from 'react-icons/bs';
+import { useForm } from "react-hook-form";
 
 export default function Conversation() {
+
+  const { handleSubmit, register } = useForm();
+  const onSubmit = data => console.log(data);
+
+  const handleUserKeyPress = e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(onSubmit)(); // this won't be triggered
+    }
+  };
+
   return (
     <Box bg="white" p={6} ml="0 !important" h="100vh" w="100%" borderRadius={30}>
       <Flex align="center">
@@ -35,6 +47,7 @@ export default function Conversation() {
       <Spacer />
       <Flex w="50%" mx={8} position="absolute" bottom="8">
         <IconButton icon={<AddIcon />} color="white" bg="brand.500" _hover={{ bg: 'brand.300' }} />
+        {/* <form onSubmit={handleSubmit(onSubmit)}> */}
         <Input
           minWidth="500px"
           ml={6}
@@ -42,7 +55,11 @@ export default function Conversation() {
           bg="gray.100"
           border="0"
           placeholder="Start typing..."
+          name= "chatMessage"
+          ref={register}
+          onKeyPress={handleUserKeyPress}
         />
+        {/* </form> */}
       </Flex>
     </Box>
   );

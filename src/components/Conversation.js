@@ -22,7 +22,7 @@ export default function Conversation() {
     socket.auth = { username }
     socket.connect()
   }
-  connectSocket(username);
+
 
   const onSubmit = function (data) {
     if (data) {
@@ -44,6 +44,7 @@ export default function Conversation() {
     : null
 
 
+  connectSocket(username);
   return (
     <Box bg="white" p={6} ml="0 !important" h="100vh" w="100%" borderRadius={30}>
       <Flex align="center">

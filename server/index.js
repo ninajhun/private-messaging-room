@@ -42,6 +42,14 @@ io.on("connection", (socket) => {
     username: socket.username,
   });
 
+  // forward the private message to the right recipient
+  socket.on("private message", ({ content, to }) => { //to is another SocketId
+    socket.to(to).emit("private message", {
+      content,
+      from: socket.id,
+    });
+  });
+
 
 });
 

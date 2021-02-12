@@ -20,6 +20,36 @@ import socket from '../socket'
 export default function Messages() {
   const [users, updateUsers] = useState([])
 
+  const onMessage = (content) => {   //Client(sender)
+    if (this.selectedUser) {
+      socket.emit("private message", {
+        content,
+        to: this.selectedUser.userID,
+      });
+      this.selectedUser.messages.push({
+        content,
+        fromSelf: true,
+      });
+    }
+  }
+
+  socket.on("private message", ({ content, from }) => { //Client(receiver)
+    for (let i = 0; i < this.users.length; i++) {
+      const user = this.users[i];
+      if (user.userID === from) {
+        user.messages.push({
+          content,
+          fromSelf: false,
+        });
+        if (user !== this.selectedUser) {
+          user.hasNewMessages = true;
+        }
+        break;
+      }
+    }
+  });
+
+
 
   socket.on("users", (users) => {
     // console.log("users.self: ", users[0].self)
@@ -66,8 +96,8 @@ return (
           <TabPanels>
             <TabPanel px="0">
               {users.map((user, index) => <ListItem key={index}>{user.userID}</ListItem>)}
-              {/* <Message />
-                <Message />
+              <Message />
+                {/* <Message />
                 <Message /> */}
             </TabPanel>
             {/* <TabPanel px="0">

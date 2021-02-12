@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { PhoneIcon, AddIcon } from '@chakra-ui/icons';
 import { BsFillCameraVideoFill, BsThreeDotsVertical } from 'react-icons/bs';
 import { useForm } from "react-hook-form";
+import socket from "../socket"
 
 export default function Conversation() {
   const [messages, updateMessages] = useState([])
@@ -15,7 +16,7 @@ export default function Conversation() {
     };
   }
 
-  const onSubmit = function(data) {
+  const onSubmit = function (data) {
     let { chatMessage } = data;
     updateMessages(messages => [...messages, chatMessage])
   };
@@ -23,6 +24,19 @@ export default function Conversation() {
   const messageBody = (messages.length && messages) ? (
     messages.map((message, index) => <ListItem key={index}>{message}</ListItem>))
     : null
+
+
+  // socket.on("chat message", (msg) => {
+  //   console.log('hi')
+  // })
+
+  const username = 'Nina'
+  const connectSocket = (username) => {
+    socket.auth = { username }
+    socket.connect()
+  }
+
+connectSocket(username)
 
 
   return (
@@ -53,13 +67,14 @@ export default function Conversation() {
           />
         </HStack>
       </Flex>
-      <Spacer />
-      <Flex w="50%" mx={8} position="absolute" bottom="8">
-        <IconButton icon={<AddIcon />} color="white" bg="brand.500" _hover={{ bg: 'brand.300' }} />
-
+      <Flex>
         <UnorderedList>
           {messageBody}
         </UnorderedList>
+      </Flex>
+      <Spacer />
+      <Flex w="50%" mx={8} position="absolute" bottom="8">
+        <IconButton icon={<AddIcon />} color="white" bg="brand.500" _hover={{ bg: 'brand.300' }} />
 
         <Input
           minWidth="500px"

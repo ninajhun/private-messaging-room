@@ -1,5 +1,5 @@
-import { Box, Flex, Text, Spacer, Image, Icon, IconButton, HStack, Input, List, ListItem, UnorderedList } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { Box, Flex, Text, Spacer, Image, Icon, IconButton, HStack, Input, ListItem, UnorderedList } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
 import { PhoneIcon, AddIcon } from '@chakra-ui/icons';
 import { BsFillCameraVideoFill, BsThreeDotsVertical } from 'react-icons/bs';
 import { useForm } from "react-hook-form";
@@ -16,27 +16,32 @@ export default function Conversation() {
     };
   }
 
-  const onSubmit = function (data) {
-    let { chatMessage } = data;
-    updateMessages(messages => [...messages, chatMessage])
-  };
-
-  const messageBody = (messages.length && messages) ? (
-    messages.map((message, index) => <ListItem key={index}>{message}</ListItem>))
-    : null
-
-
-  // socket.on("chat message", (msg) => {
-  //   console.log('hi')
-  // })
-
   const username = 'Nina'
+
   const connectSocket = (username) => {
     socket.auth = { username }
     socket.connect()
   }
+  connectSocket(username);
 
-connectSocket(username)
+  const onSubmit = function (data) {
+    if (data) {
+      let { chatMessage } = data;
+      socket.emit('chat message', chatMessage) //send chatMessage to Server
+    }
+
+  };
+
+  useEffect(() => {  // append chat message to UI
+    socket.on('chat message', (msg) => {
+      updateMessages(messages => [...messages, msg]);
+      console.log(msg)
+    });
+  }, [])
+
+  const messageBody = (messages.length && messages) ? (
+    messages.map((message, index) => <ListItem key={index}>{message}</ListItem>))
+    : null
 
 
   return (

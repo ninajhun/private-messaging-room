@@ -21,7 +21,7 @@ export default function Messages() {
       <HStack bg="gray.100">
         <VStack bg="gray.100" w="500px" h="100vh" spacing={4} py={6} align="stretch">
           <HStack justifyContent="center">
-            <Input w="60%" bg="white" fontColor="red.600" placeholder="Search in chats..." />
+            <Input w="60%" bg="white" fontcolor="red.600" placeholder="Search in chats..." />
             <IconButton icon={<AddIcon />} bg="white" />
           </HStack>
           <Heading p={5}>Inbox</Heading>

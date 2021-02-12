@@ -1,20 +1,29 @@
-import { Box, Flex, Text, Spacer, Image, Icon, IconButton, HStack, Input } from '@chakra-ui/react';
-import React from 'react';
+import { Box, Flex, Text, Spacer, Image, Icon, IconButton, HStack, Input, List, ListItem, UnorderedList } from '@chakra-ui/react';
+import React, { useState } from 'react';
 import { PhoneIcon, AddIcon } from '@chakra-ui/icons';
 import { BsFillCameraVideoFill, BsThreeDotsVertical } from 'react-icons/bs';
 import { useForm } from "react-hook-form";
 
 export default function Conversation() {
-
+  const [messages, updateMessages] = useState([])
   const { handleSubmit, register } = useForm();
-  const onSubmit = data => console.log(data);
 
   const handleUserKeyPress = e => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit(onSubmit)(); // this won't be triggered
-    }
+      handleSubmit(onSubmit)();
+    };
+  }
+
+  const onSubmit = function(data) {
+    let { chatMessage } = data;
+    updateMessages(messages => [...messages, chatMessage])
   };
+
+  const messageBody = (messages.length && messages) ? (
+    messages.map((message, index) => <ListItem key={index}>{message}</ListItem>))
+    : null
+
 
   return (
     <Box bg="white" p={6} ml="0 !important" h="100vh" w="100%" borderRadius={30}>
@@ -47,7 +56,11 @@ export default function Conversation() {
       <Spacer />
       <Flex w="50%" mx={8} position="absolute" bottom="8">
         <IconButton icon={<AddIcon />} color="white" bg="brand.500" _hover={{ bg: 'brand.300' }} />
-        {/* <form onSubmit={handleSubmit(onSubmit)}> */}
+
+        <UnorderedList>
+          {messageBody}
+        </UnorderedList>
+
         <Input
           minWidth="500px"
           ml={6}
@@ -55,11 +68,10 @@ export default function Conversation() {
           bg="gray.100"
           border="0"
           placeholder="Start typing..."
-          name= "chatMessage"
+          name="chatMessage"
           ref={register}
           onKeyPress={handleUserKeyPress}
         />
-        {/* </form> */}
       </Flex>
     </Box>
   );

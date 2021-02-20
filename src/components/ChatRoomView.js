@@ -89,8 +89,7 @@ return (
 
           <TabPanels>
             <TabPanel px="0">
-              {users.map((user, index) => <ListItem key={index}>{user.username}</ListItem>)}
-              {/* <Message /> */}
+              {users.map((user) => <Message key={user.userID} username={user.username}/> )}
             </TabPanel>
 
           </TabPanels>

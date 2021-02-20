@@ -12,7 +12,7 @@ import React from 'react';
 // }
 
 
-export default function Message() {
+export default function Message(props) {
 
   return (
     <Box m="0 !important" p="5" bg="gray.100" _hover={{ bg: 'gray.200' }}>
@@ -20,16 +20,16 @@ export default function Message() {
         <Image borderRadius="md" src="https://picsum.photos/50" />
         <Box ml={2} w="800px">
           <HStack justifyContent="space-between">
-            <Icon as={BsCircleFill} ></Icon>
+            {/* <Icon as={BsCircleFill} ></Icon> */}
             {/* color={iconColor}> */}
             <Text fontSize="sm" fontWeight="bold">
-              Nina J
+              {props.username}
             </Text>
-            <Text fontSize="sm">3:22 PM</Text>
+            {/* <Text fontSize="sm">3:22 PM</Text> */}
           </HStack>
-          <Text fontSize="sm" color="grey">
+          {/* <Text fontSize="sm" color="grey">
             Yoo, what is the hw for today?
-          </Text>
+          </Text> */}
         </Box>
       </Flex>
     </Box>

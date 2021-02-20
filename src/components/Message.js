@@ -1,4 +1,4 @@
-import { Box, HStack, Flex, Image, Text } from '@chakra-ui/react';
+import { Box, HStack, Flex, Image, Text, Icon } from '@chakra-ui/react';
 import { BsCircleFill } from 'react-icons/bs';
 import React from 'react';
 
@@ -20,9 +20,10 @@ export default function Message() {
         <Image borderRadius="md" src="https://picsum.photos/50" />
         <Box ml={2} w="800px">
           <HStack justifyContent="space-between">
-            <Icon as={BsCircleFill} color={iconColor}></Icon>
+            <Icon as={BsCircleFill} ></Icon>
+            {/* color={iconColor}> */}
             <Text fontSize="sm" fontWeight="bold">
-              Oski Bear
+              Nina J
             </Text>
             <Text fontSize="sm">3:22 PM</Text>
           </HStack>

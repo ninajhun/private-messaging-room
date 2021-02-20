@@ -51,27 +51,12 @@ export default function Conversation() {
         <Image borderRadius="md" src="https://picsum.photos/50" />
         <Box ml={2}>
           <Text fontSize="lg" fontWeight="bold">
-            Oski Bear
+           Nina J.
           </Text>
           <Text fontSize="sm" color="grey">
             Online
           </Text>
         </Box>
-        <HStack position="absolute" right="8" spacing={8}>
-          <IconButton bg="white" color="gray.500" size="lg" icon={<PhoneIcon />} />
-          <IconButton
-            bg="white"
-            color="gray.500"
-            size="lg"
-            icon={<Icon as={BsFillCameraVideoFill} />}
-          />
-          <IconButton
-            bg="white"
-            color="gray.500"
-            size="lg"
-            icon={<Icon as={BsThreeDotsVertical} />}
-          />
-        </HStack>
       </Flex>
       <Flex>
         <UnorderedList>

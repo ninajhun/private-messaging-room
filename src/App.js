@@ -4,9 +4,10 @@ import Messages from "./components/ChatRoomView"
 import SetUsername from "./components/SetUsername"
 
 export default function App() {
-  const [usernameAlreadySelected, updateUsername] = useState(false)
+  const [usernameAlreadySelected, updateisUsernameSelected] = useState(false)
+  const [username, updateUsername] = useState()
 
-  const body = (usernameAlreadySelected) ?  <Messages></Messages> : <SetUsername></SetUsername>
+  const body = (usernameAlreadySelected) ? <Messages username={username}></Messages> : <SetUsername updateUsername={updateUsername} updateisUsernameSelected={updateisUsernameSelected}></SetUsername>
 
   return (
     <ChakraProvider>

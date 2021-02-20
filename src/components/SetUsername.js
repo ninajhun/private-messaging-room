@@ -1,11 +1,14 @@
-import { Center, Button, Input, Flex, Box } from "@chakra-ui/react"
+import { Center, Button, Input } from "@chakra-ui/react"
 import React from "react"
 import { useForm } from "react-hook-form";
 
-export default function SetUsername() {
+export default function SetUsername(props) {
 
   const { register, handleSubmit } = useForm();
-  const onSubmit = data => console.log(data);
+  const onSubmit = data => {
+    props.updateUsername(data);
+    props.updateisUsernameSelected(true)
+  };
   return (
     <Center h="500px">
         <form onSubmit={handleSubmit(onSubmit)}>

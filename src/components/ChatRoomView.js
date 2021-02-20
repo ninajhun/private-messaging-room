@@ -7,17 +7,17 @@ import {
   TabPanel,
   Heading,
   VStack,
-  Input,
-  IconButton,
+  // Input,
+  // IconButton,
   ListItem
 } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import Conversation from './Conversation'
 import Message from './Message';
-import { AddIcon } from '@chakra-ui/icons';
+// import { AddIcon } from '@chakra-ui/icons';
 import socket from '../socket'
 
-export default function Messages() {
+export default function Messages(props) {
   const [users, updateUsers] = useState([])
 
   const onMessage = (content) => {   //Client(sender)
@@ -48,7 +48,6 @@ export default function Messages() {
       }
     }
   });
-
 
 
   socket.on("users", (users) => {
@@ -90,14 +89,14 @@ return (
 
           <TabPanels>
             <TabPanel px="0">
-              {users.map((user, index) => <ListItem key={index}>{user.userID}</ListItem>)}
-              <Message />
+              {users.map((user, index) => <ListItem key={index}>{user.username}</ListItem>)}
+              {/* <Message /> */}
             </TabPanel>
 
           </TabPanels>
         </Tabs>
       </VStack>
-      <Conversation />
+      <Conversation username={props.username}/>
     </HStack>
   </>
 );

@@ -1,11 +1,10 @@
 import { Box, Flex, Text, Spacer, Image, Icon, IconButton, HStack, Input, ListItem, UnorderedList } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
-import { PhoneIcon, AddIcon } from '@chakra-ui/icons';
-import { BsFillCameraVideoFill, BsThreeDotsVertical } from 'react-icons/bs';
+import {  AddIcon } from '@chakra-ui/icons';
 import { useForm } from "react-hook-form";
 import socket from "../socket"
 
-export default function Conversation() {
+export default function Conversation(props) {
   const [messages, updateMessages] = useState([])
   const { handleSubmit, register } = useForm();
 
@@ -16,13 +15,12 @@ export default function Conversation() {
     };
   }
 
-  const username = 'Nina'
+  const { username } = props.username
 
   const connectSocket = (username) => {
     socket.auth = { username }
     socket.connect()
   }
-
 
   const onSubmit = function (data) {
     if (data) {
@@ -44,14 +42,16 @@ export default function Conversation() {
     : null
 
 
-  connectSocket(username);
+  if (username) { connectSocket(username)}
+
+
   return (
     <Box bg="white" p={6} ml="0 !important" h="100vh" w="100%" borderRadius={30}>
       <Flex align="center">
         <Image borderRadius="md" src="https://picsum.photos/50" />
         <Box ml={2}>
           <Text fontSize="lg" fontWeight="bold">
-           Nina J.
+           {username}
           </Text>
           <Text fontSize="sm" color="grey">
             Online

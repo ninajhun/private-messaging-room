@@ -6,8 +6,9 @@ export default function SetUsername(props) {
 
   const { register, handleSubmit } = useForm();
   const onSubmit = data => {
-    props.updateUsername(data);
-    props.updateisUsernameSelected(true)
+    const { username } = data;
+    props.updateUsername(username);
+    props.updateAlreadyUsernameSelected(true)
   };
   return (
     <Center h="500px">

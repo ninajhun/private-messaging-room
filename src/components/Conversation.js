@@ -8,19 +8,7 @@ export default function Conversation(props) {
   const [messages, updateMessages] = useState([])
   const { handleSubmit, register } = useForm();
 
-  const handleUserKeyPress = e => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit(onSubmit)();
-    };
-  }
-
-  const { username } = props.username
-
-  const connectSocket = (username) => {
-    socket.auth = { username }
-    socket.connect()
-  }
+  const username = props.username
 
   const onSubmit = function (data) {
     if (data) {
@@ -37,12 +25,16 @@ export default function Conversation(props) {
     });
   }, [])
 
+  const handleUserKeyPress = e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(onSubmit)();
+    };
+  }
+
   const messageBody = (messages.length && messages) ? (
     messages.map((message, index) => <ListItem key={index}>{message}</ListItem>))
     : null
-
-
-  if (username) { connectSocket(username)}
 
 
   return (

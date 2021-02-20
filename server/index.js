@@ -9,9 +9,9 @@ const io = require("socket.io")(httpServer, {
 // middleware which checks the username and allows the connection
 io.use((socket, next) => {
   const username = socket.handshake.auth.username;
-  // if (!username) {
-  //   return next(new Error("invalid username"));
-  // }
+  if (!username) {
+    return next(new Error("invalid username"));
+  }
   socket.username = username;
   next();
 });

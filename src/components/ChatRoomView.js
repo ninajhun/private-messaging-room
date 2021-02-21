@@ -16,6 +16,7 @@ import socket from '../socket'
 export default function Messages(props) {
   const [users, updateUsers] = useState([]);
   const [selectedUser, updateSelectedUser] = useState() //pass updateSelected User so when click on user in left panel updates state
+  const [messages, updateMessages] = useState([])
 
   socket.on("users", (users) => {
     users.forEach((user) => {
@@ -38,18 +39,31 @@ export default function Messages(props) {
     })
   }, []);
 
-  const onMessage = (content) => {   //Client(sender)
+  const onMessage = (content) => {   //Client(sender)  //pass this & messages as props to Conversation
+    console.log(content)
+    console.log(selectedUser)
+
     if (selectedUser) {
       socket.emit("private message", {
         content,
         to: selectedUser.userID,
       });
-      selectedUser.messages.push({
-        content,
-        fromSelf: true,
-      });
+
+    updateMessages(messages => [...messages, content])
+
+
+      // selectedUser.messages.push({   //need to update messages somehow
+      //   content,
+      //   fromSelf: true,
+      // });
     }
   }
+
+
+
+  // useEffect(() => {
+  //   updateSelectedUser(user => [...user, { content: content }, { fromSelf: true }]);
+  // }, [])
 
   socket.on("private message", ({ content, from }) => { //Client(recipient)
     for (let i = 0; i < users.length; i++) {
@@ -81,15 +95,18 @@ export default function Messages(props) {
             <TabPanels>
               <TabPanel px="0">
                 {users.map((user) => {
-                  return ((user.self) ? <Message key={user.userID} username={`${user.username} (yourself)`} user={user} updateSelectedUser={updateSelectedUser}/> :
+                  return ((user.self) ? <Message key={user.userID} username={`${user.username} (yourself)`} user={user} updateSelectedUser={updateSelectedUser} /> :
                     <Message key={user.userID} user={user} username={user.username} updateSelectedUser={updateSelectedUser} />
-                 ) })
+                  )
+                })
                 }
               </TabPanel>
             </TabPanels>
           </Tabs>
         </VStack>
-        <Conversation username={props.username} />
+        {(selectedUser) ? <Conversation selectedUser={selectedUser} onMessage={onMessage} messages={messages} updateMessages={updateMessages} /> : null}
+
+
       </HStack>
     </>
   );

@@ -4,11 +4,8 @@ import React from 'react';
 
 // const isUserOnline = () => {   // beginning logic for dot if user is online
 //   [isOnline, updateIsOnline] = useState(false)
-
 //   updateIsOnline()
-
 //   return const iconColor = (isOnline) ? "blue" : "grey"
-
 // }
 
 

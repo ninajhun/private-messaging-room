@@ -1,25 +1,38 @@
 import { Box, Flex, Text, Spacer, Image, Icon, IconButton, HStack, Input, ListItem, UnorderedList } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
-import {  AddIcon } from '@chakra-ui/icons';
+import { AddIcon } from '@chakra-ui/icons';
 import { useForm } from "react-hook-form";
 import socket from "../socket"
 
+
 export default function Conversation(props) {
-  const [messages, updateMessages] = useState([])
+  // const [messages, updateMessages] = useState([])
   const { handleSubmit, register } = useForm();
-  const username = props.username
+  const selectedUser = props.selectedUser;
+  const onMessage = props.onMessage;
+  const messages = props.messages;
+  // const updateMessages = props.updateMessages
+
 
   const onSubmit = function (data) {
-    // if (data) {
-    //   let { chatMessage } = data;
-    //   socket.emit('chat message', chatMessage) //send chatMessage to Server
-    // }
+    if (data) {
+      let { chatMessage } = data;
+      // socket.emit('chat message', chatMessage) //send chatMessage to Server
+      onMessage(chatMessage)
+    }
   };
 
 
   // append chat message to UI
   // useEffect(() => {
   //   socket.on('chat message', (msg) => {
+  //     updateMessages(messages => [...messages, msg]);
+  //   });
+  // }, [])
+
+  // append chat message to UI
+  // useEffect(() => {
+  //   socket.on('private message', (msg) => {
   //     updateMessages(messages => [...messages, msg]);
   //   });
   // }, [])
@@ -37,7 +50,7 @@ export default function Conversation(props) {
         <Image borderRadius="md" src="https://picsum.photos/50" />
         <Box ml={2}>
           <Text fontSize="lg" fontWeight="bold">
-           {username}
+            {selectedUser.username}
           </Text>
           <Text fontSize="sm" color="grey">
             Online
@@ -48,7 +61,7 @@ export default function Conversation(props) {
         <UnorderedList>
           {(messages.length && messages) ? (
             messages.map((message, index) => <ListItem key={index}>{message}</ListItem>))
-            : null }
+            : null}
         </UnorderedList>
       </Flex>
       <Spacer />

@@ -18,6 +18,7 @@ io.use((socket, next) => {
 
 
 io.on("connection", (socket) => {
+//  console.log('a user connected');
 
 //  socket.on('chat message', (msg) => {  //on event send msg to all sockets
 //    io.emit('chat message', msg )  //add broadcast flag next
@@ -48,6 +49,10 @@ io.on("connection", (socket) => {
       from: socket.id,
     });
   });
+
+  // socket.on("private message", (anotherSocketId, msg) => {
+  //   socket.to(anotherSocketId).emit("private message", socket.id, msg);
+  // });
 
 
 });

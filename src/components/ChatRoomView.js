@@ -7,14 +7,10 @@ import {
   TabPanel,
   Heading,
   VStack,
-  // Input,
-  // IconButton,
-  ListItem
 } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import Conversation from './Conversation'
 import Message from './Message';
-// import { AddIcon } from '@chakra-ui/icons';
 import socket from '../socket'
 
 export default function Messages(props) {
@@ -51,10 +47,8 @@ export default function Messages(props) {
 
 
   socket.on("users", (users) => {
-    // console.log("users.self: ", users[0].self)
     users.forEach((user) => {
       user.self = user.userID === socket.id;
-      // initReactiveProperties(user);
     });
     // put the current user first, and then sort by username
     users = users.sort((a, b) => {
@@ -64,39 +58,40 @@ export default function Messages(props) {
       return a.username > b.username ? 1 : 0;
     });
     updateUsers(users)
-
-    // updateUsers( array => [...array, users])
   });
 
   useEffect(() => {
     socket.on("user connected", (user) => {  //add new user connected
       user.self = user.userID === socket.id;
-      // if (!users.filter(stateUser => user.userID === stateUser.userID).length) {
       updateUsers(users => [...users, user])
     })
-  }, [] );
+  }, []);
 
 
-return (
-  <>
-    <HStack bg="gray.100">
-      <VStack bg="gray.100" w="500px" h="100vh" spacing={4} py={6} align="stretch">
-        <Heading p={5}>Inbox</Heading>
-        <Tabs>
-          <TabList>
-            <Tab>Messages</Tab>
-          </TabList>
+  return (
+    <>
+      <HStack bg="gray.100">
+        <VStack bg="gray.100" w="500px" h="100vh" spacing={4} py={6} align="stretch">
+          <Heading p={5}>Inbox</Heading>
+          <Tabs>
+            <TabList>
+              <Tab>Messages</Tab>
+            </TabList>
 
-          <TabPanels>
-            <TabPanel px="0">
-              {users.map((user) => <Message key={user.userID} username={user.username}/> )}
-            </TabPanel>
+            <TabPanels>
+              <TabPanel px="0">
+                {users.map((user) => {
+                  return( (user.self) ? <Message key={user.userID} username={`${user.username} (yourself)`} /> :
+                    <Message key={user.userID} username={user.username} />
+                 ) })
+                }
+              </TabPanel>
 
-          </TabPanels>
-        </Tabs>
-      </VStack>
-      <Conversation username={props.username}/>
-    </HStack>
-  </>
-);
+            </TabPanels>
+          </Tabs>
+        </VStack>
+        <Conversation username={props.username} />
+      </HStack>
+    </>
+  );
 }

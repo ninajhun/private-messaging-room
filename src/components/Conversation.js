@@ -7,23 +7,22 @@ import socket from "../socket"
 export default function Conversation(props) {
   const [messages, updateMessages] = useState([])
   const { handleSubmit, register } = useForm();
-
   const username = props.username
 
   const onSubmit = function (data) {
-    if (data) {
-      let { chatMessage } = data;
-      socket.emit('chat message', chatMessage) //send chatMessage to Server
-    }
-
+    // if (data) {
+    //   let { chatMessage } = data;
+    //   socket.emit('chat message', chatMessage) //send chatMessage to Server
+    // }
   };
 
-  useEffect(() => {  // append chat message to UI
-    socket.on('chat message', (msg) => {
-      updateMessages(messages => [...messages, msg]);
-      console.log(msg)
-    });
-  }, [])
+
+  // append chat message to UI
+  // useEffect(() => {
+  //   socket.on('chat message', (msg) => {
+  //     updateMessages(messages => [...messages, msg]);
+  //   });
+  // }, [])
 
   const handleUserKeyPress = e => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -31,11 +30,6 @@ export default function Conversation(props) {
       handleSubmit(onSubmit)();
     };
   }
-
-  const messageBody = (messages.length && messages) ? (
-    messages.map((message, index) => <ListItem key={index}>{message}</ListItem>))
-    : null
-
 
   return (
     <Box bg="white" p={6} ml="0 !important" h="100vh" w="100%" borderRadius={30}>
@@ -52,7 +46,9 @@ export default function Conversation(props) {
       </Flex>
       <Flex>
         <UnorderedList>
-          {messageBody}
+          {(messages.length && messages) ? (
+            messages.map((message, index) => <ListItem key={index}>{message}</ListItem>))
+            : null }
         </UnorderedList>
       </Flex>
       <Spacer />

@@ -15,10 +15,10 @@ import React from 'react';
 export default function Message(props) {
 
   return (
-    <Box m="0 !important" p="5" bg="gray.100" _hover={{ bg: 'gray.200' }}>
+    <Box m="0 !important" p="5" bg="gray.100" _hover={{ bg: 'gray.200' }} as="button" _selected={{ bg: "blue" }} onClick={() => props.updateSelectedUser(props.user)}>
       <Flex align="flex-start">
         <Image borderRadius="md" src="https://picsum.photos/50" />
-        <Box ml={2} w="800px">
+        <Box ml={2} w="800px" >
           <HStack justifyContent="space-between">
             {/* <Icon as={BsCircleFill} ></Icon> */}
             {/* color={iconColor}> */}

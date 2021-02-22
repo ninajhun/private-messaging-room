@@ -60,7 +60,7 @@ export default function Conversation(props) {
       <Flex>
         <UnorderedList>
           {(messages.length && messages) ? (
-            messages.map((message, index) => <ListItem key={index}>{message}</ListItem>))
+            messages.map((message, index) => <ListItem key={index}>{message.content}</ListItem>))
             : null}
         </UnorderedList>
       </Flex>

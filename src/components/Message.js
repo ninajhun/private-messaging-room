@@ -10,9 +10,12 @@ import React from 'react';
 
 
 export default function Message(props) {
+  const user = props.user;
+  const username = props.username;
+  const updateSelectedUser = props.updateSelectedUser;
 
   return (
-    <Box m="0 !important" p="5" bg="gray.100" _hover={{ bg: 'gray.200' }} as="button" _selected={{ bg: "blue" }} onClick={() => props.updateSelectedUser(props.user)}>
+    <Box m="0 !important" p="5" bg="gray.100" _hover={{ bg: 'gray.200' }} as="button" _selected={{ bg: "blue" }} onClick={() => updateSelectedUser(user)}>
       <Flex align="flex-start">
         <Image borderRadius="md" src="https://picsum.photos/50" />
         <Box ml={2} w="800px" >
@@ -20,7 +23,7 @@ export default function Message(props) {
             {/* <Icon as={BsCircleFill} ></Icon> */}
             {/* color={iconColor}> */}
             <Text fontSize="sm" fontWeight="bold">
-              {props.username}
+              {username}
             </Text>
             {/* <Text fontSize="sm">3:22 PM</Text> */}
           </HStack>

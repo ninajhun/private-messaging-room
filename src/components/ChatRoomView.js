@@ -47,11 +47,9 @@ export default function Messages(props) {
         to: selectedUser.userID,
       });
 
-      updateMessages(messages => [...messages, {content: content, fromSelf: true}])
+      updateMessages(messages => [...messages, { content: content, fromSelf: true }])
 
-      // if (content) {
-      //   updateMessages(messages => [...messages, content])
-      // }
+
       // updateSelectedUser(selectedUser => [...selectedUser, content])
 
       // selectedUser.messages.push({   //need to update messages somehow
@@ -60,12 +58,12 @@ export default function Messages(props) {
       // });
     }
     // }
-
   }
 
   // useEffect(() => {
   //   updateSelectedUser(user => [...user, { content: content }, { fromSelf: true }]);
   // }, [])
+  //!!!!!!!!!prob will use this for the rooms to work, rn messages is global and not for each user
 
   useEffect(() => {
     socket.on("private message", ({ content, from }) => { //Client(recipient)
@@ -75,6 +73,7 @@ export default function Messages(props) {
         if (user.userID === from) {
           updateMessages(messages => [...messages, { content: content, fromSelf: false }])
         }
+
 
         // if (user.userID === from) {
         //   user.messages.push({
@@ -91,7 +90,7 @@ export default function Messages(props) {
       }
     });
 
-  })
+  }, [users])
 
 
 

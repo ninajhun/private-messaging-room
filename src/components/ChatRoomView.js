@@ -18,9 +18,15 @@ export default function Messages(props) {
   const [selectedUser, updateSelectedUser] = useState([]) //pass updateSelected User so when click on user in left panel updates state
   const [messages, updateMessages] = useState([])
 
+  const [selectedUserMessages, updateSelectedUserMessages] = useState([])
+  const [userMessages, updateUserMessages] = useState([])
+
+
+
   socket.on("users", (users) => {
     users.forEach((user) => {
       user.self = user.userID === socket.id;
+      user.messages = [];
     });
     // put the current user first, and then sort by username
     users = users.sort((a, b) => {
@@ -35,6 +41,7 @@ export default function Messages(props) {
   useEffect(() => {
     socket.on("user connected", (user) => {  //add new user connected
       user.self = user.userID === socket.id;
+      user.messages = [];
       updateUsers(users => [...users, user])
     })
   }, []);
@@ -47,33 +54,30 @@ export default function Messages(props) {
         to: selectedUser.userID,
       });
 
-      updateMessages(messages => [...messages, { content: content, fromSelf: true }])
+      // updateMessages(messages => [...messages, { content: content, fromSelf: true }])
+      // updateSelectedUserMessages(selectedUserMessages => [...selectedUserMessages, { selectedUser: selectedUser.userID, content: content, fromSelf: true }])
 
+      // updateSelectedUser(selectedUser => [ ...selectedUser, { messages: { content: content, fromSelf: true } }])
 
-      // updateSelectedUser(selectedUser => [...selectedUser, content])
-
-      // selectedUser.messages.push({   //need to update messages somehow
-      //   content,
-      //   fromSelf: true,
-      // });
     }
     // }
   }
 
-  // useEffect(() => {
-  //   updateSelectedUser(user => [...user, { content: content }, { fromSelf: true }]);
-  // }, [])
-  //!!!!!!!!!prob will use this for the rooms to work, rn messages is global and not for each user
+
 
   useEffect(() => {
     socket.on("private message", ({ content, from }) => { //Client(recipient)
       for (let i = 0; i < users.length; i++) {
         const user = users[i];
+        console.log("user inside:", user )
+        console.log("user mess inside:", user.messages)
 
         if (user.userID === from) {
-          updateMessages(messages => [...messages, { content: content, fromSelf: false }])
-        }
 
+          user.messages.push({ content: content, fromSelf: false });
+          updateUsers(users => [...users, user ]);
+          //updateUsers(user => [...user, { messages: { content: content, fromSelf: false } }])
+        }
 
         // if (user.userID === from) {
         //   user.messages.push({
@@ -81,16 +85,21 @@ export default function Messages(props) {
         //     fromSelf: false,
         //   });
 
-
-        //   if (user !== selectedUser) {
-        //     user.hasNewMessages = true;
-        //   }
-        // break;
-        // }
       }
     });
 
+    console.log(users)
+
   }, [users])
+
+
+        // if (user.userID === from) {
+        //   updateMessages(messages => [...messages, { content: content, fromSelf: false }])
+        // }
+
+        // if (user.userID === from) {
+        //   updateUserMessages(userMessages => [...userMessages, { content: content, fromSelf: false }])
+        // }
 
 
 
@@ -107,7 +116,8 @@ export default function Messages(props) {
             <TabPanels>
               <TabPanel px="0">
                 {users.map((user) => {
-                  return ((user.self) ? <Message key={user.userID} username={`${user.username} (yourself)`} user={user} updateSelectedUser={updateSelectedUser} /> :
+                  return ((user.self) ? null //<Message key={user.userID} username={`${user.username} (yourself)`} user={user} updateSelectedUser={updateSelectedUser} />
+                    :
                     <Message key={user.userID} user={user} username={user.username} updateSelectedUser={updateSelectedUser} />
                   )
                 })
@@ -116,7 +126,19 @@ export default function Messages(props) {
             </TabPanels>
           </Tabs>
         </VStack>
-        {(selectedUser) ? <Conversation selectedUser={selectedUser} onMessage={onMessage} messages={messages} updateMessages={updateMessages} /> : null}
+        {
+          // (selectedUser.userID === selectedUserMessages.selectedUser) ? <Conversation selectedUser={selectedUser} onMessage={onMessage} messages={selectedUserMessages.content} updateMessages={updateMessages} />
+          //     : <Conversation selectedUser={selectedUser} onMessage={onMessage} messages={null} updateMessages={updateMessages} />
+          (selectedUser) ?
+            <Conversation
+              users={users}
+              selectedUser={selectedUser}
+              onMessage={onMessage}
+              messages={messages}
+              userMessages={userMessages}
+              selectedUserMessages={selectedUserMessages}
+              updateMessages={updateMessages} /> : null
+        }
 
 
       </HStack>

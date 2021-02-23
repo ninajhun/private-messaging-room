@@ -1,41 +1,27 @@
 import { Box, Flex, Text, Spacer, Image, Icon, IconButton, HStack, Input, ListItem, UnorderedList } from '@chakra-ui/react';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { AddIcon } from '@chakra-ui/icons';
 import { useForm } from "react-hook-form";
-import socket from "../socket"
+// import socket from "../socket"
 
 
 export default function Conversation(props) {
-  // const [messages, updateMessages] = useState([])
   const { handleSubmit, register } = useForm();
+  const users = props.users
   const selectedUser = props.selectedUser;
   const onMessage = props.onMessage;
   const messages = props.messages;
-  // const updateMessages = props.updateMessages
+  const userMessages = props.userMessages;
+  const selectedUserMessages = props.selectedUserMessages;
 
 
   const onSubmit = function (data) {
     if (data) {
       let { chatMessage } = data;
-      // socket.emit('chat message', chatMessage) //send chatMessage to Server
       onMessage(chatMessage)
     }
   };
 
-
-  // append chat message to UI
-  // useEffect(() => {
-  //   socket.on('chat message', (msg) => {
-  //     updateMessages(messages => [...messages, msg]);
-  //   });
-  // }, [])
-
-  // append chat message to UI
-  // useEffect(() => {
-  //   socket.on('private message', (msg) => {
-  //     updateMessages(messages => [...messages, msg]);
-  //   });
-  // }, [])
 
   const handleUserKeyPress = e => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -59,9 +45,15 @@ export default function Conversation(props) {
       </Flex>
       <Flex>
         <UnorderedList>
-          {(messages.length && messages) ? (
-            messages.map((message, index) => <ListItem key={index}>{message.content}</ListItem>))
-            : null}
+          {
+            (selectedUser) ?
+              userMessages.map((userMessage, index) => <ListItem key={index}>{userMessage.content}</ListItem>)
+              : null
+          }
+
+          {
+            selectedUserMessages.map((selectedUserMessage, index) => <ListItem key={index}>{selectedUserMessage.content}</ListItem>)
+          }
         </UnorderedList>
       </Flex>
       <Spacer />
@@ -83,3 +75,22 @@ export default function Conversation(props) {
     </Box>
   );
 }
+
+
+  // const updateMessages = props.updateMessages
+  // const [messages, updateMessages] = useState([])
+
+  // send chatMessage to Server
+  // socket.emit('chat message', chatMessage)
+
+  // append chat message to UI
+  // useEffect(() => {
+  //   socket.on('chat message', (msg) => {
+  //     updateMessages(messages => [...messages, msg]);
+  //   });
+  // }, [])
+
+
+    // (messages) ? (
+            //   messages.map((message, index) => <ListItem key={index}>{message.content}</ListItem>))
+            //   : null

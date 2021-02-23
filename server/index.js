@@ -18,11 +18,7 @@ io.use((socket, next) => {
 
 
 io.on("connection", (socket) => {
-//  console.log('a user connected');
 
-//  socket.on('chat message', (msg) => {  //on event send msg to all sockets
-//    io.emit('chat message', msg )  //add broadcast flag next
-//  })
 
   // fetch existing users
   const users = [];
@@ -50,14 +46,14 @@ io.on("connection", (socket) => {
     });
   });
 
-  // socket.on("private message", (anotherSocketId, msg) => {
-  //   socket.to(anotherSocketId).emit("private message", socket.id, msg);
-  // });
+
+
+//  socket.on('chat message', (msg) => {  //on event send msg to all sockets
+//    io.emit('chat message', msg )  //add broadcast flag next
+//  })
 
 
 });
-
-
 
 
 
